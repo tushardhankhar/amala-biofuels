@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #103b32;
+  --color-forest-deep: #0b2a24;
+  --color-charcoal: #101714;
+  --color-ivory: #f5f4ef;
+  --color-ivory-deep: #ebe9e1;
+  --color-sage: #a6b8a4;
+  --color-gold: #c8a66a;
+  --color-gold-soft: #dcc394;
+
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-mask-up: mask-up 0.7s var(--ease-out-expo) both;
+  --animate-fade-up: fade-up 0.7s var(--ease-out-expo) both;
+  --animate-scroll-cue: scroll-cue 2.4s var(--ease-out-expo) infinite;
+  --animate-ken-burns: ken-burns 24s ease-out both;
+
+  @keyframes mask-up {
+    from { transform: translateY(105%); }
+    to { transform: translateY(0); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scroll-cue {
+    0% { transform: scaleY(0); transform-origin: top; }
+    45% { transform: scaleY(1); transform-origin: top; }
+    55% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  @keyframes ken-burns {
+    from { transform: scale(1.08); }
+    to { transform: scale(1); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-ivory text-charcoal font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-charcoal);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+  section[id] {
+    scroll-margin-top: 72px;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1360px] px-5 sm:px-8 lg:px-12;
+  }
+  .eyebrow {
+    @apply font-display text-[11px] font-medium uppercase tracking-[0.22em];
+  }
+  .display {
+    @apply font-display font-bold tracking-[-0.035em] leading-[0.98];
+  }
+  .rule {
+    @apply h-px w-full bg-current opacity-15;
+  }
+  /* Process-flow line that draws itself */
+  .flow-path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 2.4s 0.5s var(--ease-out-expo) forwards;
+  }
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+  .flow-pulse {
+    stroke-dasharray: 0.04 0.96;
+    stroke-dashoffset: 1;
+    animation: pulse-travel 7s 2.4s linear infinite;
+  }
+  @keyframes pulse-travel {
+    to { stroke-dashoffset: 0; }
+  }
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .flow-pulse {
+    display: none;
+  }
+}
