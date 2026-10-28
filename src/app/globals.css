@@ -1,16 +1,23 @@
 @import "tailwindcss";
 
+/*
+ * Brand palette, sampled from the supplied Amala Biofuels logo.
+ * Green dominates; flame orange is a restrained energy accent; leaf green supports.
+ */
 @theme {
-  --color-forest: #103b32;
-  --color-forest-deep: #0b2a24;
-  --color-charcoal: #101714;
-  --color-ivory: #f5f4ef;
-  --color-ivory-deep: #ebe9e1;
-  --color-sage: #a6b8a4;
-  --color-gold: #c8a66a;
-  --color-gold-soft: #dcc394;
+  --color-forest: #02462d;
+  --color-forest-deep: #013121;
+  --color-forest-ink: #0a2219;
+  --color-leaf: #758d2d;
+  --color-leaf-soft: #b5c98a;
+  --color-flame: #f78330;
+  --color-flame-deep: #c95a12;
+  --color-ivory: #fff9ee;
+  --color-cream: #f9ecdb;
+  --color-sand: #efe3d0;
+  --color-charcoal: #26332e;
 
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-instrument-serif), Georgia, serif;
 
@@ -18,8 +25,12 @@
 
   --animate-mask-up: mask-up 0.7s var(--ease-out-expo) both;
   --animate-fade-up: fade-up 0.7s var(--ease-out-expo) both;
-  --animate-scroll-cue: scroll-cue 2.4s var(--ease-out-expo) infinite;
   --animate-ken-burns: ken-burns 24s ease-out both;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-float: float 14s ease-in-out infinite;
+  --animate-drift: drift 40s linear infinite;
+  --animate-shine: shine 3.2s ease-in-out infinite;
+  --animate-pulse-dot: pulse-dot 2.4s ease-out infinite;
 
   @keyframes mask-up {
     from { transform: translateY(105%); }
@@ -29,11 +40,24 @@
     from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  @keyframes scroll-cue {
-    0% { transform: scaleY(0); transform-origin: top; }
-    45% { transform: scaleY(1); transform-origin: top; }
-    55% { transform: scaleY(1); transform-origin: bottom; }
-    100% { transform: scaleY(0); transform-origin: bottom; }
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    33% { transform: translate3d(4%, -6%, 0) scale(1.06); }
+    66% { transform: translate3d(-5%, 4%, 0) scale(0.96); }
+  }
+  @keyframes drift {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes shine {
+    0% { transform: translateX(-120%) skewX(-20deg); }
+    60%, 100% { transform: translateX(220%) skewX(-20deg); }
+  }
+  @keyframes pulse-dot {
+    0% { box-shadow: 0 0 0 0 rgba(247, 131, 48, 0.55); }
+    100% { box-shadow: 0 0 0 14px rgba(247, 131, 48, 0); }
   }
   @keyframes ken-burns {
     from { transform: scale(1.08); }
@@ -51,47 +75,41 @@
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    background: var(--color-gold);
-    color: var(--color-charcoal);
+    background: var(--color-forest);
+    color: var(--color-ivory);
   }
   :focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-flame);
     outline-offset: 3px;
   }
-  section[id] {
-    scroll-margin-top: 72px;
+  [id] {
+    scroll-margin-top: 96px;
   }
 }
 
 @layer components {
   .container-x {
-    @apply mx-auto w-full max-w-[1360px] px-5 sm:px-8 lg:px-12;
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12;
   }
   .eyebrow {
-    @apply font-display text-[11px] font-medium uppercase tracking-[0.22em];
+    @apply font-display text-[12px] font-bold uppercase tracking-[0.16em];
   }
   .display {
-    @apply font-display font-bold tracking-[-0.035em] leading-[0.98];
+    @apply font-display font-extrabold tracking-[-0.03em] leading-[1.02];
   }
-  .rule {
-    @apply h-px w-full bg-current opacity-15;
+  .h2 {
+    @apply font-display text-[clamp(2rem,4.2vw,3.25rem)] font-extrabold leading-[1.06] tracking-[-0.025em];
   }
-  /* Process-flow line that draws itself */
-  .flow-path {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: draw 2.4s 0.5s var(--ease-out-expo) forwards;
+  .lede {
+    @apply text-[17px] leading-relaxed sm:text-lg;
   }
-  @keyframes draw {
-    to { stroke-dashoffset: 0; }
+  /* Flowing light along a stroke */
+  .dash-flow {
+    stroke-dasharray: 6 14;
+    animation: dash 1.6s linear infinite;
   }
-  .flow-pulse {
-    stroke-dasharray: 0.04 0.96;
-    stroke-dashoffset: 1;
-    animation: pulse-travel 7s 2.4s linear infinite;
-  }
-  @keyframes pulse-travel {
-    to { stroke-dashoffset: 0; }
+  @keyframes dash {
+    to { stroke-dashoffset: -20; }
   }
   .grain {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
@@ -102,6 +120,11 @@
   html {
     scroll-behavior: auto;
   }
+  .animate-marquee,
+  .animate-drift,
+  .animate-float {
+    animation: none !important;
+  }
   *,
   *::before,
   *::after {
@@ -109,8 +132,5 @@
     animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-  .flow-pulse {
-    display: none;
   }
 }

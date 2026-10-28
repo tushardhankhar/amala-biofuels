@@ -1,13 +1,14 @@
-import { enquiryTypes, type EnquiryType } from "@/content/site";
+import { enquiryIndustries, enquiryProducts } from "@/content/site";
 
 export type EnquiryInput = {
   name: string;
   company: string;
-  email: string;
   phone: string;
-  type: EnquiryType | "";
+  email: string;
+  product: string;
+  industry: string;
+  quantity: string;
   location: string;
-  scope: string;
   message: string;
   consent: boolean;
 };
@@ -20,10 +21,10 @@ const PHONE = /^[+()\d\s-]{7,20}$/;
 const limits: Partial<Record<keyof EnquiryInput, number>> = {
   name: 120,
   company: 160,
-  email: 200,
   phone: 20,
-  location: 160,
-  scope: 300,
+  email: 200,
+  quantity: 200,
+  location: 200,
   message: 4000,
 };
 
@@ -31,12 +32,13 @@ const limits: Partial<Record<keyof EnquiryInput, number>> = {
 export function validateEnquiry(input: EnquiryInput): EnquiryErrors {
   const e: EnquiryErrors = {};
   if (!input.name.trim()) e.name = "Please enter your full name.";
-  if (!input.company.trim()) e.company = "Please enter your company name.";
+  if (!input.company.trim()) e.company = "Please enter your company or organisation.";
+  if (!input.phone.trim()) e.phone = "Please enter a phone number.";
+  else if (!PHONE.test(input.phone.trim())) e.phone = "Please enter a valid phone number.";
   if (!input.email.trim()) e.email = "Please enter your business email.";
   else if (!EMAIL.test(input.email.trim())) e.email = "Please enter a valid email address.";
-  if (input.phone.trim() && !PHONE.test(input.phone.trim())) e.phone = "Please enter a valid phone number.";
-  if (!input.type || !enquiryTypes.includes(input.type as EnquiryType)) e.type = "Please choose an enquiry type.";
-  if (input.message.trim().length < 10) e.message = "Please tell us a little more (at least 10 characters).";
+  if (!(enquiryProducts as readonly string[]).includes(input.product)) e.product = "Please choose a product of interest.";
+  if (!(enquiryIndustries as readonly string[]).includes(input.industry)) e.industry = "Please choose your industry or application.";
   if (!input.consent) e.consent = "Please confirm you agree to us processing your details.";
 
   for (const [key, max] of Object.entries(limits) as [keyof EnquiryInput, number][]) {
@@ -51,11 +53,12 @@ export function normaliseEnquiry(raw: Record<string, unknown>): EnquiryInput {
   return {
     name: s("name"),
     company: s("company"),
-    email: s("email"),
     phone: s("phone"),
-    type: s("type") as EnquiryType | "",
+    email: s("email"),
+    product: s("product"),
+    industry: s("industry"),
+    quantity: s("quantity"),
     location: s("location"),
-    scope: s("scope"),
     message: s("message"),
     consent: raw.consent === true || raw.consent === "on" || raw.consent === "true",
   };

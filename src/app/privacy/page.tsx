@@ -16,7 +16,7 @@ export default function Privacy() {
         in line with India&rsquo;s Digital Personal Data Protection Act, 2023 and other applicable law.
       </p>
       <h2>Information we collect</h2>
-      <p>When you submit a business enquiry we collect the details you provide: name, company, business email, phone number, enquiry type, project location, requirement or scope, and your message.</p>
+      <p>When you submit a quote request or enquiry we collect the details you provide: name, company or organisation, phone number, business email, product of interest, industry or intended application, required quantity or consumption, delivery location and any additional requirements.</p>
       <h2>How we use it</h2>
       <ul>
         <li>To respond to your enquiry and discuss potential business with you.</li>
@@ -32,7 +32,7 @@ export default function Privacy() {
       <p>You may request access to, correction of, or erasure of your personal data, or withdraw consent, by contacting us using the details on our website.</p>
       <h2>Contact</h2>
       <p>
-        {company.legalName}, {company.locality}, {company.region}, India.
+        {company.legalName}, {company.addresses[0].lines.join(", ")}, India.
         {company.contact.email ? ` Email: ${company.contact.email}.` : ""}
       </p>
     </LegalPage>

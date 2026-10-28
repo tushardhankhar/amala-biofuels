@@ -5,8 +5,10 @@ import type { ReactNode } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const variants: Record<"up" | "fade" | "mask", Variants> = {
+const variants: Record<"up" | "fade" | "mask" | "blur" | "scale", Variants> = {
   up: { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0 } },
+  blur: { hidden: { opacity: 0, y: 28, filter: "blur(10px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)" } },
+  scale: { hidden: { opacity: 0, y: 30, scale: 0.96 }, show: { opacity: 1, y: 0, scale: 1 } },
   fade: { hidden: { opacity: 0 }, show: { opacity: 1 } },
   mask: { hidden: { clipPath: "inset(0 0 100% 0)" }, show: { clipPath: "inset(0 0 0% 0)" } },
 };
@@ -35,7 +37,7 @@ export function Reveal({ children, delay = 0, kind = "up", className, as = "div"
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-      transition={{ duration: kind === "mask" ? 0.9 : 0.65, delay, ease }}
+      transition={{ duration: kind === "mask" ? 0.9 : kind === "blur" ? 0.9 : 0.7, delay, ease }}
     >
       {children}
     </Tag>

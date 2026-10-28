@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { photos, type PhotoKey } from "@/content/photos";
+import { Parallax } from "./fx";
 import { ImageReveal } from "./Reveal";
 
 type Props = {
@@ -12,13 +13,15 @@ type Props = {
   reveal?: boolean;
   /** "dark" grades daylight photography to sit inside cinematic dark sections */
   tone?: "natural" | "dark";
+  /** Scroll-linked drift (default on) */
+  parallax?: boolean;
 };
 
 /** Responsive photograph (AVIF/WebP via next/image, blurred placeholder, no layout shift). */
-export function Media({ photo, sizes, priority, className = "", imgClassName = "", reveal = true, tone = "natural" }: Props) {
+export function Media({ photo, sizes, priority, className = "", imgClassName = "", reveal = true, tone = "natural", parallax = true }: Props) {
   const p = photos[photo];
   const position = className.includes("absolute") ? "" : "relative";
-  const img = (
+  const photo_ = (
     <Image
       src={p.src}
       alt={p.alt}
@@ -30,6 +33,7 @@ export function Media({ photo, sizes, priority, className = "", imgClassName = "
       className={`object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.035] ${tone === "dark" ? "brightness-[.8] contrast-[1.08] saturate-[.7]" : ""} ${imgClassName}`}
     />
   );
+  const img = parallax ? <Parallax amount={8}>{photo_}</Parallax> : photo_;
   return (
     <div className={`${position} overflow-hidden bg-forest-deep ${className}`}>
       {reveal ? <ImageReveal className="absolute inset-0">{img}</ImageReveal> : img}

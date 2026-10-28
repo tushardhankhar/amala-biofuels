@@ -15,8 +15,8 @@ export default function Terms() {
       <h2>Information on this site</h2>
       <p>
         Content on this website is provided for general information about {company.legalName} and its areas of activity. It does not constitute an
-        offer, a binding commitment, or technical, financial or investment advice. Services, availability and project scope are confirmed only in
-        written agreements.
+        offer, a binding commitment, or technical advice for any specific equipment or application. Product availability, specifications, suitability for a particular application and
+        commercial terms are confirmed only in writing for each supply.
       </p>
       <h2>Intellectual property</h2>
       <p>The name, wordmark, text and imagery on this site belong to {company.legalName} or its licensors and may not be reused without permission.</p>

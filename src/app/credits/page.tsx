@@ -14,13 +14,13 @@ export default function Credits() {
   return (
     <LegalPage title="Image Credits" updated={new Date().toISOString().slice(0, 10)} template={false}>
       <p>
-        Some photographs on this website are openly licensed images of industrial and renewable-fuel facilities, used as representative imagery. They
-        do not depict {company.legalName} sites or projects.
+        Photographs on this website are openly licensed images used as representative imagery. They do not depict the{" "}
+        {company.legalName} facility, products, staff or customers.
       </p>
-      <ul className="!list-none !pl-0 divide-y divide-charcoal/10 border-y border-charcoal/10">
+      <ul className="!list-none !pl-0 divide-y divide-forest/10 border-y border-forest/10">
         {credited.map((p) => (
           <li key={p.credit!.source} className="py-5">
-            <p className="font-display font-semibold text-charcoal">{p.credit!.title}</p>
+            <p className="font-display font-bold text-forest">{p.credit!.title}</p>
             <p className="mt-1 text-sm">
               {p.credit!.author} ·{" "}
               {p.credit!.licenseUrl ? (
